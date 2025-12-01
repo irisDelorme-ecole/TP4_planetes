@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3" stretch="2,0,1">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout"/>
+     <layout class="QVBoxLayout" name="animation"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0,0">
@@ -28,17 +28,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox"/>
+       <widget class="QComboBox" name="corpsComboBox"/>
       </item>
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Vitesse de l'objet (m/s²)</string>
+         <string>Vitesse de l'objet (m/s)</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="vitesseLineEdit"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -54,21 +54,21 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="commencerPushButton">
         <property name="text">
          <string>Commencer</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pausePushButton">
         <property name="text">
          <string>Pause</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="deletePushButton">
         <property name="text">
          <string>Delete</string>
         </property>
@@ -77,7 +77,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2"/>
+     <layout class="QVBoxLayout" name="canvas"/>
     </item>
    </layout>
   </widget>

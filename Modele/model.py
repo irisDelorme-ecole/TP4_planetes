@@ -1,26 +1,25 @@
-import pymunk as pk
-from PyQt6.QtCore import QObject
-from PyQt6.QtGui import QPainter, QColor
 
+import pymunk as pk
+from PyQt6.QtCore import QObject, pyqtSignal
 
 class Model(QObject):
 
     conts_grav = (6.674*(10**-11))
+    signal_position = pyqtSignal(object)
 
     def __init__(self):
         QObject.__init__(self)
         self.space = pk.Space()
-        self.space.gravity = (0, -900)
 
 
-
-        self.asteroid = pk.Body(300, pk.moment_for_circle(300, 0, 4))
+        #tests pour comprendre
+        self.asteroid = pk.Body(3000000, pk.moment_for_circle(3000000, 0, 4))
 
         self.shape = pk.Circle(self.asteroid, 4)
 
         self.space.add(self.asteroid, self.shape)
 
-        self.planete = pk.Body(1000, pk.moment_for_circle(1000, 0, 10))
+        self.planete = pk.Body(1000000000000, pk.moment_for_circle(1000000000000, 0, 10))
 
         self.shape_planete = pk.Circle(self.planete, 10)
 
@@ -29,11 +28,16 @@ class Model(QObject):
         self.space.add(self.planete, self.shape_planete)
 
 
-        for step in range(10):
+
+        for step in range(20):
             self.space.step(1/60)
             self.asteroid.apply_force_at_local_point(self.gravity())
-            print(f"step {step} pos {self.asteroid.position} v {self.asteroid.velocity}")
+            print(self.asteroid.position)
 
+
+    """
+    devrait retourner la force gravitationnelle sur l'asteroide
+    """
     def gravity(self):
         distsqurd = self.planete.position.get_distance_squared(self.asteroid.position)
 
@@ -52,4 +56,5 @@ class Model(QObject):
 
 
 if __name__ == "__main__":
-    app = Model()
+    model = Model()
+
