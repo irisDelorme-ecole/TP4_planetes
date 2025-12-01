@@ -18,8 +18,10 @@ class Controller:
         #syncro anim - model
         self.model.signal_update.connect(self.update)
 
-    def update(self):
-        self.vue.update()
-        self.animation.update()
+    def update(self, pos_asteroid):
+        #self.vue.update()
+        self.animation.update(self.flip_pymunk_to_qt(600,pos_asteroid))
 
+    def flip_pymunk_to_qt(self, height, position):
+        return position[0], position[1]-height
 

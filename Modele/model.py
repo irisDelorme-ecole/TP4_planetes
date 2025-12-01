@@ -12,6 +12,9 @@ class Model(QObject):
         QObject.__init__(self)
         self.space = pk.Space()
 
+        self.W, self.H = 600, 400
+
+
         #par souci de clarté, screen = 400 x 500
         #tests pour comprendre
         self.asteroid = pk.Body(3000000, pk.moment_for_circle(3000000, 0, 4))
@@ -32,11 +35,12 @@ class Model(QObject):
 
         for step in range(20):
             self.space.step(1/60)
-            self.asteroid.apply_force_at_local_point(self.gravity())
             print(self.asteroid.position)
 
     def update(self, dt:float):
         self.space.step(dt)
+        self.asteroid.apply_force_at_local_point(self.gravity())
+        self.signal_update.emit(self.asteroid.position)
 
 
     """
