@@ -1,11 +1,4 @@
-import sys
-
-from PyQt6.QtWidgets import QApplication
-
-from Vue.Vue import Vue
-
-import Modele.model as Model
-from Vue.Animation import Animation
+from PyQt6.QtCore import QTimer
 
 
 class Controller:
@@ -16,12 +9,17 @@ class Controller:
         self.animation = animation
 
         #syncro anim - model
-        self.model.signal_update.connect(self.update)
 
-    def update(self, pos_asteroid):
+        timer = QTimer()
+        timer.timeout.connect(self.update)
+        timer.start(16)
+
+
+    def update(self):
+        self.model.update()
         #self.vue.update()
-        self.animation.update(self.flip_pymunk_to_qt(600,pos_asteroid))
+        #self.animation.update_pos()
 
     def flip_pymunk_to_qt(self, height, position):
-        return position[0], position[1]-height
+        return int(position[0]), int(position[1]-height)
 

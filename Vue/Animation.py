@@ -14,8 +14,13 @@ class Animation(QWidget):
     def __init__(self):
         super().__init__()
         self.setFixedSize(600, 400)
+
         self.update()
 
+
+    def update_asteroid(self, asteroid):
+        self.asteroid = asteroid
+        self.update()
 
     def paintEvent(self, event):
         p = QPainter(self)
@@ -23,11 +28,13 @@ class Animation(QWidget):
 
         #pour background
         p.setBrush(Qt.GlobalColor.gray)
-        p.drawRect(0, 0, 600, 400)
+        p.drawRect(0, 0, 800, 400)
 
         #planete de base(bouge pas pour maintenant)
         p.setBrush(Qt.GlobalColor.black)
-        p.drawEllipse(400, 200,30, 30)
+        p.drawEllipse(400, 200,60, 60)
+
+
 
 
 if __name__ == "__main__":

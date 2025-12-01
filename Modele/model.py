@@ -34,9 +34,6 @@ class Model(QObject):
 
 
 
-        for step in range(20):
-            self.space.step(1/60)
-            print(self.asteroid.position)
 
     def update(self, dt:float):
         self.space.step(dt)
