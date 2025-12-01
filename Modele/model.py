@@ -5,13 +5,14 @@ from PyQt6.QtCore import QObject, pyqtSignal
 class Model(QObject):
 
     conts_grav = (6.674*(10**-11))
-    signal_position = pyqtSignal(object)
+    signal_update = pyqtSignal(object)
+
 
     def __init__(self):
         QObject.__init__(self)
         self.space = pk.Space()
 
-
+        #par souci de clarté, screen = 400 x 500
         #tests pour comprendre
         self.asteroid = pk.Body(3000000, pk.moment_for_circle(3000000, 0, 4))
 
@@ -33,6 +34,9 @@ class Model(QObject):
             self.space.step(1/60)
             self.asteroid.apply_force_at_local_point(self.gravity())
             print(self.asteroid.position)
+
+    def update(self, dt:float):
+        self.space.step(dt)
 
 
     """

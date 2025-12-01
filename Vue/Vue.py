@@ -1,6 +1,5 @@
-import sys
+import os
 
-from PyQt6.QtCore import QPropertyAnimation
 from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox
 from PyQt6.uic import loadUi
 
@@ -13,24 +12,16 @@ class Vue(QMainWindow):
     
 
 
-    def __init__(self):
+    def __init__(self, animation):
         super().__init__()
-        loadUi("ui/tp4.fenetre.ui", self)
+        loadUi("Vue/Ui/tp4.fenetre.ui", self)
         self.show()
 
-
-
-    def PaintEvent(self, event):
-        pass
-
-    def init_simulation(self):
-        pass
+        self.animation.addWidget(animation)
 
 
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = Vue()
-    window.show()
-    sys.exit(app.exec())
+
+
+
