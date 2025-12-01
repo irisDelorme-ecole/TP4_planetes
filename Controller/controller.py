@@ -1,11 +1,4 @@
-import sys
-
-from PyQt6.QtWidgets import QApplication
-
-from Vue.Vue import Vue
-
-import Modele.model as Model
-from Vue.Animation import Animation
+from PyQt6.QtCore import QTimer
 
 
 class Controller:
@@ -16,10 +9,19 @@ class Controller:
         self.animation = animation
 
         #syncro anim - model
-        self.model.signal_update.connect(self.update)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(16)
+
+
+        self.model.signal_update.connect(self.animation.update_asteroid)
+
 
     def update(self):
-        self.vue.update()
-        self.animation.update()
+        self.model.step(1/60)
+        #self.vue.update()
+        #self.animation.update_pos()
+
 
 
