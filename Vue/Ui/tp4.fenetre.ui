@@ -21,7 +21,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0,0">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="Corps_label">
         <property name="text">
          <string>Corps attracteurs</string>
         </property>
@@ -31,7 +31,7 @@
        <widget class="QComboBox" name="corpsComboBox"/>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="vitesse_label">
         <property name="text">
          <string>Vitesse de l'objet (m/s)</string>
         </property>
