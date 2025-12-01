@@ -4,6 +4,7 @@ from PyQt6.QtCore import QObject, pyqtSignal
 
 class Model(QObject):
 
+
     conts_grav = (6.674*(10**-11))
     signal_update = pyqtSignal(object)
 

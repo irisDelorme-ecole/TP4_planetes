@@ -1,6 +1,6 @@
 import os
 
-from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox
+from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox, QLineEdit, QPushButton
 from PyQt6.uic import loadUi
 
 
@@ -9,6 +9,10 @@ class Vue(QMainWindow):
     canvas : QVBoxLayout
     animation : QVBoxLayout
     corpsComboBox : QComboBox
+    vitesseLineEdit : QLineEdit
+    commencerPushButton : QPushButton
+    pausePushButton : QPushButton
+    deletePushButton : QPushButton
     
 
 
