@@ -10,16 +10,18 @@ class Controller:
 
         #syncro anim - model
 
-        timer = QTimer()
-        timer.timeout.connect(self.update)
-        timer.start(16)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(16)
+
+
+        self.model.signal_update.connect(self.animation.update_asteroid)
 
 
     def update(self):
-        self.model.update()
+        self.model.step(1/60)
         #self.vue.update()
         #self.animation.update_pos()
 
-    def flip_pymunk_to_qt(self, height, position):
-        return int(position[0]), int(position[1]-height)
+
 

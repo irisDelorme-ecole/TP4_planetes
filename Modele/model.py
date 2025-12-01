@@ -16,15 +16,15 @@ class Model(QObject):
         self.W, self.H = 600, 400
 
 
-        #par souci de clarté, screen = 400 x 500
+
         #tests pour comprendre
-        self.asteroid = pk.Body(3000000, pk.moment_for_circle(3000000, 0, 4))
+        self.asteroid = pk.Body(3, pk.moment_for_circle(3, 0, 30))
 
         self.shape = pk.Circle(self.asteroid, 4)
 
         self.space.add(self.asteroid, self.shape)
 
-        self.planete = pk.Body(1000000000000, pk.moment_for_circle(1000000000000, 0, 10))
+        self.planete = pk.Body(10000000000000, pk.moment_for_circle(10000000000000, 0, 90), body_type = pk.Body.STATIC)
 
         self.shape_planete = pk.Circle(self.planete, 10)
 
@@ -35,10 +35,10 @@ class Model(QObject):
 
 
 
-    def update(self, dt:float):
+    def step(self, dt:float):
         self.space.step(dt)
         self.asteroid.apply_force_at_local_point(self.gravity())
-        self.signal_update.emit(self.asteroid.position)
+        self.signal_update.emit(self.asteroid)
 
 
     """
