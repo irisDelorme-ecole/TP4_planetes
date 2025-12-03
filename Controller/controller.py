@@ -7,6 +7,7 @@ class Controller:
         self.model = model
         self.vue = vue
         self.animation = animation
+        self.vue.set_model_combo_box(self.model.model_planetes)
 
         #syncro anim - model
 

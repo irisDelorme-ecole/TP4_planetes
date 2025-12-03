@@ -19,5 +19,6 @@ if __name__ == "__main__":
     window = Vue(anim)
     model = Model()
     controller = Controller(model, window, anim)
+    window.set_controller(controller)
     window.show()
     sys.exit(app.exec())

@@ -1,5 +1,6 @@
 import os
 
+from PyQt6.QtCore import QAbstractListModel
 from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox, QLineEdit, QPushButton
 from PyQt6.uic import loadUi
 
@@ -25,7 +26,10 @@ class Vue(QMainWindow):
 
 
 
-
+    def set_model_combo_box(self, model):
+        self.corpsComboBox.setModel(model)
+    def set_controller(self, controller):
+        self.__controller = controller
 
 
 

@@ -1,12 +1,13 @@
 import pymunk as pk
-from PyQt6.QtCore import QObject, pyqtSignal, QAbstractListModel, Qt
+from PyQt6.QtCore import QObject, pyqtSignal, QAbstractListModel, Qt, QModelIndex
 from PyQt6.QtGui import QColor
 
 
 class PlanetesListModel(QAbstractListModel):
     def __init__(self, data):
         super().__init__()
-        self.__planetes = data
+        self.__planetes = data or []
+
 
     def data(self, index, role):
         if not index.isValid():
@@ -17,13 +18,15 @@ class PlanetesListModel(QAbstractListModel):
         elif role == Qt.ItemDataRole.UserRole:
             return planete
         return None
+    def rowCount(self, parent=QModelIndex()):
+        return len(self.__planetes)
 
 
 class Planete:
-    masse: float
-    couleur: QColor
-    rayon: float
-    nom: str
+    _masse: float
+    _couleur: QColor
+    _rayon: float
+    _nom: str
 
     def __init__(self, masse, rayon, nom, couleur):
         self.masse = masse
@@ -33,35 +36,37 @@ class Planete:
 
     @property
     def nom(self):
-        return self.nom
+        return self._nom
 
     @nom.setter
     def nom(self, nom):
-        self.nom = nom
+        self._nom = nom
 
     @property
     def masse(self):
-        return self.masse
+        return self._masse
 
     @masse.setter
     def masse(self, masse):
-        self.masse = masse
+        self._masse = masse
 
     @property
     def rayon(self):
-        return self.rayon
+        return self._rayon
 
     @rayon.setter
     def rayon(self, rayon):
-        self.rayon = rayon
+        self._rayon = rayon
 
     @property
     def couleur(self):
-        return self.couleur
+        return self._couleur
 
     @couleur.setter
     def couleur(self, couleur):
-        self.couleur = couleur
+        self._couleur = couleur
+    def __str__(self):
+        return self._nom
 
 
 class Model(QObject):
@@ -75,10 +80,15 @@ class Model(QObject):
                       Planete(568300000000000000000000000000, 58232000, "Saturne", "Yellow"),
                       Planete(86810000000000000000000000000, 25362000, "Uranus", "green"),
                       Planete(102400000000000000000000000000, 24622000, "Neptune", "darkBlue")]
-
+    model_planetes : QAbstractListModel
     def __init__(self):
         QObject.__init__(self)
         self.space = pk.Space()
+        self.model_planetes = PlanetesListModel(self._list_planetes)
+
+
+
+
 
         # par souci de clarté, screen = 400 x 500
         # tests pour comprendre
@@ -121,6 +131,9 @@ class Model(QObject):
              range(2)]
 
         return f
+    @property
+    def list_planetes(self):
+        return self._list_planetes
 
 
 if __name__ == "__main__":
