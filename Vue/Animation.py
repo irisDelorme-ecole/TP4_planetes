@@ -3,7 +3,7 @@ classe qui gère le widget d'animation
 """
 import sys
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QPainter
 from PyQt6.QtWidgets import QWidget, QApplication
 
@@ -13,7 +13,8 @@ class Animation(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setFixedSize(600, 400)
+        #ne pas changer sauf si changé dans modèle
+        self.setFixedSize(800, 400)
 
         self.asteroid = None
 
@@ -36,16 +37,17 @@ class Animation(QWidget):
 
         #planete de base(bouge pas pour maintenant)
         p.setBrush(Qt.GlobalColor.black)
-        p.drawEllipse(400, 200,90, 90)
+        p.drawEllipse(QPoint(600, 200),90, 90)
 
         if self.asteroid is not None:
             p.setBrush(Qt.GlobalColor.blue)
-            print("here")
-            p.drawEllipse(int(self.asteroid.position[0]), int(self.flip_pymunk_to_qt(8, self.asteroid.position)[1]), 30, 30)
+            print(self.asteroid.position)
+            p.drawEllipse(QPoint(int(self.asteroid.position[0] ), int(self.flip_pymunk_to_qt(200, self.asteroid.position[1]))) , 30, 30)
+            print(int(self.asteroid.position[0] ), int(self.flip_pymunk_to_qt(400, self.asteroid.position[1])))
 
 
     def flip_pymunk_to_qt(self, height, position):
-        return int(position[0]), int(position[1]-height)
+        return  int(height-position)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

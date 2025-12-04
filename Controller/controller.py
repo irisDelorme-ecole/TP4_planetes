@@ -20,7 +20,7 @@ class Controller:
 
 
     def update(self):
-        self.model.step(1/60)
+        self.model.update(1/60)
         #self.vue.update()
         #self.animation.update_pos()
 
