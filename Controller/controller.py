@@ -2,6 +2,8 @@ from PyQt6.QtCore import QTimer
 
 
 class Controller:
+    time_step = 3600*24
+
 
     def __init__(self, model, vue, animation):
         self.model = model
@@ -16,7 +18,7 @@ class Controller:
         self.timer.start(16)
 
 
-        self.model.signal_update.connect(self.animation.update_asteroid)
+        self.model.signal_update.connect(self.animation.update_anim)
 
 
     def update(self):
