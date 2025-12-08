@@ -87,6 +87,7 @@ class Model(QObject):
                       Planete(102400000000000000000000, 24622, "Neptune", "darkBlue")]
     model_planetes : QAbstractListModel
 
+    SCALE =500 / (0.5e8)
 
     def __init__(self):
         QObject.__init__(self)
@@ -99,17 +100,22 @@ class Model(QObject):
 
 
         # tests pour comprendre (on espere avoir un scale correct bientot.)
-        self.planete = Planete(568300000000000000000000, 58.232, "Saturne", "Yellow")
-        self.asteroid = Planete(33011e13, 24.40, "Mercure", "darkGray")
+        self.planete = Planete(2e30, 1392684, "Saturne", "Yellow")
+        self.asteroid =Planete(568300000000000000000000, 58232, "Saturne", "Yellow")
 
         self.shape = pk.Circle(self.asteroid, int(self.asteroid.rayon))
 
 
         self.shape_planete = pk.Circle(self.planete, int(self.planete.rayon))
 
-        self.planete.position = (600, 300)
+        self.planete.position = (700/self.SCALE, 450/self.SCALE)
 
-        self.asteroid.position = (50, 50)
+        self.asteroid.position = (self.planete.position.x-600/self.SCALE, self.planete.position.y-150/self.SCALE)
+
+        self.asteroid.velocity = (10/self.SCALE, 20/self.SCALE)
+
+        # self.shape.elasticity = 10
+        # self.shape_planete.elasticity = 10
 
         self.space.add(self.planete, self.shape_planete)
         self.space.add(self.asteroid, self.shape)
@@ -121,7 +127,8 @@ class Model(QObject):
         self.asteroid.apply_impulse_at_local_point(f)
 
         f2 = self.gravity_on_planet()
-        self.planete.apply_force_at_local_point(f2)
+        print(f2, "                 FORCE")
+        self.planete.apply_impulse_at_local_point(f2)
         print("pos planete : ", self.planete.position)
         self.signal_update.emit(self.asteroid, self.planete)
         print(self.asteroid.position)
@@ -133,12 +140,15 @@ class Model(QObject):
     def gravity_on_asteroid(self):
         distsqurd = self.planete.position.get_distance_squared(self.asteroid.position)
 
-        pos_asteroid = (self.asteroid.position.x, self.asteroid.position.y)
+        x_a = self.asteroid.position.x
+        y_a = self.asteroid.position.y
 
-        pos_planete = (self.planete.position.x, self.planete.position.y)
+        x_p = self.planete.position.x
+        y_p = self.planete.position.y
 
 
-        dir_f = [(pos_planete[i] - pos_asteroid[i])/distsqurd**(1/2) for i in range(2)]
+
+        dir_f = [(x_p -x_a) / (distsqurd**(1/2)), (y_p -y_a) / (distsqurd**(1/2))]
 
 
         f = [float(dir_f[i] * ((self.G * self.planete.mass * self.asteroid.mass) / distsqurd)) for i in
@@ -150,13 +160,13 @@ class Model(QObject):
     def gravity_on_planet(self):
         distsqurd = self.planete.position.get_distance_squared(self.asteroid.position)
 
-        pos_asteroid = (self.asteroid.position.x, self.asteroid.position.y)
+        x_a = self.asteroid.position.x
+        y_a = self.asteroid.position.y
 
-        pos_planete = (self.planete.position.x, self.planete.position.y)
+        x_p = self.planete.position.x
+        y_p = self.planete.position.y
 
-
-        dir_f = [(pos_asteroid[i]- pos_planete[i])/distsqurd**(1/2) for i in range(2)]
-
+        dir_f = [(x_a - x_p) / (distsqurd ** (1 / 2)), (y_a - y_p) / (distsqurd ** (1 / 2))]
 
         f = [float(dir_f[i] * ((self.G * self.planete.mass * self.asteroid.mass) / distsqurd)) for i in
              range(2)]

@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import QWidget, QApplication
 
 class Animation(QWidget):
 
+    SCALE = 500/(0.5e8)
 
     def __init__(self):
         super().__init__()
@@ -41,14 +42,18 @@ class Animation(QWidget):
         if self.planete is not None:
 
             p.setBrush(Qt.GlobalColor.black)
-            p.drawEllipse(QPoint(int(self.planete.position[0]), int(self.flip_pymunk_to_qt(600,self.planete.position[1]))),int(self.planete.rayon), int(self.planete.rayon))
+            p.drawEllipse(self.scaled_point(self.planete.position),int(self.planete.rayon*self.SCALE), int(self.planete.rayon*self.SCALE))
 
-        if self.asteroid is not None and self.asteroid.position[0] < 1000 and self.asteroid.position[1] < 1000:
+        if self.asteroid is not None:
             p.setBrush(Qt.GlobalColor.blue)
             print(self.asteroid.position)
-            p.drawEllipse(QPoint(int(self.asteroid.position[0] ), int(self.flip_pymunk_to_qt(600, self.asteroid.position[1]))) , int(self.asteroid.rayon), int(self.asteroid.rayon))
+            p.drawEllipse(self.scaled_point(self.asteroid.position) , int(self.asteroid.rayon /1000), int(self.asteroid.rayon/1000))
+            print(int(self.asteroid.rayon/100))
             print(int(self.asteroid.position[0] ), int(self.flip_pymunk_to_qt(600, self.asteroid.position[1])))
 
+    def scaled_point(self, position):
+        print(QPoint(int(self.SCALE*position[0]), self.flip_pymunk_to_qt(600,self.SCALE*position[1])), "POS SCALED")
+        return QPoint(int(self.SCALE*position[0]), self.flip_pymunk_to_qt(600,self.SCALE*position[1]))
 
     def flip_pymunk_to_qt(self, height, position):
         return  int(height-position)
