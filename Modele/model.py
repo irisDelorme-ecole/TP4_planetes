@@ -1,3 +1,4 @@
+import numpy as np
 import pymunk as pk
 from PyQt6.QtCore import QObject, pyqtSignal, QAbstractListModel, Qt, QModelIndex
 from PyQt6.QtGui import QColor
@@ -91,6 +92,8 @@ class Model(QObject):
 
     def __init__(self):
         QObject.__init__(self)
+        self.distance = 0
+        self.counter = 0
         self.space = pk.Space()
         self.space.gravity = (0,0)
         self.model_planetes = PlanetesListModel(self._list_planetes)
@@ -173,6 +176,23 @@ class Model(QObject):
 
         print(f)
         return f
+
+    def set_canvases(self, canvas1, canvas2, canvas3):
+        self.canvas1 = canvas1
+        self.canvas2 = canvas2
+        self.canvas3 = canvas3
+
+    def distance_des_astres(self):
+        aspos = np.array([self.asteroid.position.x, self.asteroid.position.y])
+        plpos = np.array([self.planete.position.x, self.planete.position.y])
+        self.distance = np.sqrt(np.sum(aspos - plpos)**2)
+
+    def update_graph(self):
+        self.distance_des_astres()
+        new_distance = self.distance
+        t = self.counter
+        self.counter += 1
+        self.canvas2.update_distance(t, new_distance)
 
 
     @property

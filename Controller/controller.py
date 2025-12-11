@@ -17,12 +17,14 @@ class Controller:
         self.timer.timeout.connect(self.update)
         self.timer.start(16)
 
+        self.model.set_canvases(self.vue.canvas1, self.vue.canvas2, self.vue.canvas3)
 
         self.model.signal_update.connect(self.animation.update_anim)
 
 
     def update(self):
         self.model.update(10/60)
+        self.model.update_graph()
         #self.vue.update()
         #self.animation.update_pos()
 
