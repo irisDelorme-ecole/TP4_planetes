@@ -4,7 +4,7 @@ import traceback
 from PyQt6.QtWidgets import QApplication
 
 from Controller.controller import Controller
-from Modele.model import Model
+from Modele.model import Model, Planete
 from Vue.Animation import Animation
 from Vue.Vue import Vue
 
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     anim = Animation()
     window = Vue(anim)
-    model = Model()
+    model = Model(Planete(3.3e23, 2440, "Mercure", "darkGray", 0.4), Planete(2e30, 696342, "Soleil", "Yellow", 15))
     controller = Controller(model, window, anim)
     window.set_controller(controller)
     window.show()
