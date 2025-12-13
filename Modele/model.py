@@ -109,7 +109,7 @@ class Model(QObject):
 
         self.shape_planete = pk.Circle(self.__planete, int(self.__planete.rayon))
 
-        self.__planete.position = (750 / self.SCALE, 500 / self.SCALE)
+        self.__planete.position = (750 / self.SCALE, 400 / self.SCALE)
 
         self.__asteroid.position = (self.__planete.position.x - 600 / self.SCALE, self.__planete.position.y - 150 / self.SCALE)
 

@@ -15,7 +15,7 @@ class Animation(QWidget):
     def __init__(self):
         super().__init__()
         #ne pas changer sauf si changé dans modèle
-        #self.setFixedSize(1000, 800)
+        self.setFixedSize(1000, 750)
 
         self.asteroid = None
         self.planete = None
