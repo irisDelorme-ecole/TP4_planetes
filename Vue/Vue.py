@@ -1,7 +1,7 @@
 import os
 
 from PyQt6.QtCore import QAbstractListModel
-from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox, QLineEdit, QPushButton, QSpinBox
 from PyQt6.uic import loadUi
 
 from Vue.DonneesCanvas import Canvas1, Canvas2, Canvas3
@@ -11,7 +11,7 @@ class Vue(QMainWindow):
     canvas: QVBoxLayout
     animation: QVBoxLayout
     corpsComboBox: QComboBox
-    vitesseLineEdit: QLineEdit
+    vitesseSpinBox : QSpinBox
     commencerPushButton: QPushButton
     pausePushButton: QPushButton
     deletePushButton: QPushButton
@@ -23,10 +23,10 @@ class Vue(QMainWindow):
         super().__init__()
         loadUi("Vue/Ui/tp4.fenetre.ui", self)
         self.show()
-        self.commencerPushButton.setDisabled(True)
-        self.pausePushButton.setDisabled(True)
-        self.deletePushButton.setDisabled(True)
-        self.vitesseLineEdit.textChanged.connect(self.mettre_a_jour_boutons)
+        # self.commencerPushButton.setDisabled(True)
+        # self.pausePushButton.setDisabled(True)
+        # self.deletePushButton.setDisabled(True)
+        self.vitesseSpinBox.valueChanged.connect(self.mettre_a_jour_boutons)
         self.commencerPushButton.clicked.connect(self.commencer_animation)
 
         self.animation.addWidget(animation)
@@ -46,10 +46,10 @@ class Vue(QMainWindow):
 
     def mettre_a_jour_boutons(self):
         # besoin d'un validator
-        if self.vitesseLineEdit.text() == "":
-            self.commencerPushButton.setDisabled(True)
-        else:
-            self.commencerPushButton.setDisabled(False)
+        # if self.vitesseLineEdit.text() == "":
+        #     self.commencerPushButton.setDisabled(True)
+        #else:
+        self.commencerPushButton.setDisabled(False)
 
     def set_model_combo_box(self, model):
         self.corpsComboBox.setModel(model)
