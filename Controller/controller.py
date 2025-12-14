@@ -18,19 +18,34 @@ class Controller:
         self.timer.start(16)
         self.timer.stop()
 
-        self.model.set_canvases(self.vue.canvas1, self.vue.canvas2, self.vue.canvas3)
+        self.set_canvases(self.vue.canvas1, self.vue.canvas2, self.vue.canvas3)
+        self.model.dist_updated.connect(self.canvas2.update_distance)
 
         self.vue.vitesseSpinBox.valueChanged.connect(self.set_vitesse)
 
-        self.vue.pausePushButton.clicked.connect(self.stop)
-        self.vue.pausePushButton.clicked.connect(self.stop)
+        self.vue.pausePushButton.clicked.connect(self.gestion_pause)
         self.vue.commencerPushButton.clicked.connect(self.start)
         self.vue.corpsComboBox.currentIndexChanged.connect(self.change_asteroid)
 
 
-        self.model.signal_update.connect(self.animation.update_anim)
+        self.model.signal_update.connect(self.update_views)
 
         # self.vue.deletePushButton.clicked.connect(self.reset)
+
+    def update_views(self):
+        self.animation.update_anim(self.model.asteroid, self.model.planete)
+        self.canvas2.update_distance(self.model.counter, self.model.distance)
+
+    def set_canvases(self, canvas1, canvas2, canvas3):
+        self.canvas1 = canvas1
+        self.canvas2 = canvas2
+        self.canvas3 = canvas3
+
+    def gestion_pause(self):
+        if self.timer.isActive():
+            self.timer.stop()
+        else:
+            self.start()
 
     def change_asteroid(self, index):
         self.model.asteroid = self.model.model_planetes.get_planetes(index)
@@ -49,7 +64,7 @@ class Controller:
 
     def update(self):
         self.model.update(10/60)
-        self.model.update_graph()
+        #self.model.update_graph()
         #self.vue.update()
         #self.animation.update_pos()
 

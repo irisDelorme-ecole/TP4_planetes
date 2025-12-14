@@ -81,7 +81,8 @@ class Model(QObject):
     H = 800
     W = 1000
 
-    signal_update = pyqtSignal(object, object)
+    signal_update = pyqtSignal()
+    dist_updated = pyqtSignal(object, object)
     #rayons en km
     _list_planetes = [Planete(3.3e23, 2440, "Mercure", "darkGray", 0.4),
                       Planete(4.8e24, 6052, "Venus", "darkYellow", 0.9),
@@ -109,7 +110,7 @@ class Model(QObject):
 
         self.shape_planete = pk.Circle(self.__planete, int(self.__planete.rayon))
 
-        self.__planete.position = (750 / self.SCALE, 400 / self.SCALE)
+        self.__planete.position = (750 / self.SCALE, 500 / self.SCALE)
 
         self.__asteroid.position = (self.__planete.position.x - 600 / self.SCALE, self.__planete.position.y - 150 / self.SCALE)
 
@@ -123,7 +124,7 @@ class Model(QObject):
 
     @property
     def asteroid(self):
-        return self.asteroid
+        return (self.__asteroid)
 
     @asteroid.setter
     def asteroid(self, asteroid):
@@ -135,7 +136,7 @@ class Model(QObject):
 
         self.__asteroid.velocity = (10 / self.SCALE, 20 / self.SCALE)
         self.space.add(self.__asteroid, self.shape)
-        print(self.__asteroid)
+        #print(self.__asteroid)
 
     def update(self, dt: float):
         self.space.step(dt)
@@ -143,11 +144,12 @@ class Model(QObject):
         self.__asteroid.apply_impulse_at_local_point(f)
 
         f2 = self.gravity_on_planet()
-        print(f2, "                 FORCE")
+        #print(f2, "                 FORCE")
         self.__planete.apply_impulse_at_local_point(f2)
-        print("pos planete : ", self.__planete.position)
-        self.signal_update.emit(self.__asteroid, self.__planete)
-        print(self.__asteroid.position)
+        #print("pos planete : ", self.__planete.position)
+        self.signal_update.emit()
+        self.update_distance()
+        #print(self.__asteroid.position)
 
     def set_vitesse(self, value):
         self.__asteroid.velocity = ((np.sqrt((value ** 2) / 5)) / self.SCALE,
@@ -174,7 +176,7 @@ class Model(QObject):
         f = [float(dir_f[i] * ((self.G * self.__planete.mass * self.__asteroid.mass) / distsqurd)) for i in
              range(2)]
 
-        print(f)
+        #print(f)
         return f
 
     def gravity_on_planet(self):
@@ -191,25 +193,29 @@ class Model(QObject):
         f = [float(dir_f[i] * ((self.G * self.__planete.mass * self.__asteroid.mass) / distsqurd)) for i in
              range(2)]
 
-        print(f)
+        #print(f)
         return f
 
-    def set_canvases(self, canvas1, canvas2, canvas3):
-        self.canvas1 = canvas1
-        self.canvas2 = canvas2
-        self.canvas3 = canvas3
+    @property
+    def planete(self):
+        return self.__planete
 
-    def distance_des_astres(self):
+    @planete.setter
+    def planete(self, value):
+        pass
+
+    def update_distance(self):
         aspos = np.array([self.__asteroid.position.x, self.__asteroid.position.y])
         plpos = np.array([self.__planete.position.x, self.__planete.position.y])
         self.distance = np.sqrt(np.sum(aspos - plpos)**2)
 
-    def update_graph(self):
-        self.distance_des_astres()
-        new_distance = self.distance
-        t = self.counter
         self.counter += 1
-        self.canvas2.update_distance(t, new_distance)
+
+    # def update_graph(self):
+    #     self.update_distance()
+    #     new_distance = self.distance
+    #
+    #     self.canvas2.update_distance(t, new_distance)
 
 
     @property

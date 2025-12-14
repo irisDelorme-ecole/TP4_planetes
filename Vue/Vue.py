@@ -1,6 +1,4 @@
-import os
 
-from PyQt6.QtCore import QAbstractListModel
 from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox, QLineEdit, QPushButton, QSpinBox
 from PyQt6.uic import loadUi
 

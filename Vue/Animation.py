@@ -15,7 +15,7 @@ class Animation(QWidget):
     def __init__(self):
         super().__init__()
         #ne pas changer sauf si changé dans modèle
-        self.setFixedSize(1000, 750)
+        self.setFixedSize(1000, 700)
 
         self.asteroid = None
         self.planete = None
@@ -25,7 +25,7 @@ class Animation(QWidget):
 
 
     def update_anim(self, asteroid, planete):
-        print(asteroid.position)
+        #print(asteroid.position)
         self.asteroid = asteroid
         self.planete = planete
         self.update()
@@ -35,8 +35,8 @@ class Animation(QWidget):
 
 
         #pour background
-        p.setBrush(Qt.GlobalColor.white)
-        p.drawRect(0, 0, 1000, 800)
+        p.setBrush(Qt.GlobalColor.black)
+        p.drawRect(0, 0, 1000, 700)
 
         #planete de base(bouge pas pour maintenant)
         if self.planete is not None:
@@ -46,19 +46,19 @@ class Animation(QWidget):
 
         if self.asteroid is not None:
             p.setBrush(Qt.GlobalColor.blue)
-            print(self.asteroid.position)
+            #print(self.asteroid.position)
             p.drawEllipse(self.scaled_point(self.asteroid.position), int(self.asteroid.nb_terres * 5),
                           int(self.asteroid.nb_terres * 5))
-            print(int(self.asteroid.rayon / 100))
-            print(int(self.asteroid.position[0]), int(self.flip_pymunk_to_qt(800, self.asteroid.position[1])))
+            #print(int(self.asteroid.rayon / 100))
+            #print(int(self.asteroid.position[0]), int(self.flip_pymunk_to_qt(800, self.asteroid.position[1])))
 
         p.setPen(Qt.GlobalColor.white)
-        p.drawText(QPoint(850, 750), "Soleil PAS à l'échelle")
+        p.drawText(QPoint(850, 680), "Soleil PAS à l'échelle")
 
 
     def scaled_point(self, position):
-        print(QPoint(int(self.SCALE*position[0]), self.flip_pymunk_to_qt(600,self.SCALE*position[1])), "POS SCALED")
-        return QPoint(int(self.SCALE*position[0]), self.flip_pymunk_to_qt(600,self.SCALE*position[1]))
+        #print(QPoint(int(self.SCALE*position[0]), self.flip_pymunk_to_qt(600,self.SCALE*position[1])), "POS SCALED")
+        return QPoint(int(self.SCALE*position[0]), self.flip_pymunk_to_qt(700,self.SCALE*position[1]))
 
     def flip_pymunk_to_qt(self, height, position):
         return  int(height-position)
