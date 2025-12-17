@@ -27,11 +27,11 @@ class Controller:
         self.vue.commencerPushButton.clicked.connect(self.start)
         self.vue.corpsComboBox.currentIndexChanged.connect(self.change_asteroid)
         self.vue.deletePushButton.clicked.connect(self.reset)
+        self.vue.delete.connect(self.reset)
+        self.vue.p.connect(self.gestion_pause)
 
 
         self.model.signal_update.connect(self.update_views)
-
-        # self.vue.deletePushButton.clicked.connect(self.reset)
 
     def reset(self):
         self.timer.stop()
@@ -40,6 +40,8 @@ class Controller:
         self.reset_canvases()
         self.animation.update_anim(self.model.asteroid, self.model.planete)
         self.vue.commencerPushButton.setEnabled(True)
+        self.vue.deletePushButton.setEnabled(False)
+        self.vue.pausePushButton.setEnabled(False)
 
     def reset_canvases(self):
         self.canvas1.reset()

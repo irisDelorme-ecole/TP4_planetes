@@ -1,4 +1,4 @@
-
+from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import QWidget, QMainWindow, QApplication, QVBoxLayout, QComboBox, QLineEdit, QPushButton, QSpinBox
 from PyQt6.uic import loadUi
 
@@ -17,13 +17,16 @@ class Vue(QMainWindow):
     Canvas2 : QWidget
     Canvas3 : QWidget
 
+    delete = pyqtSignal()
+    p = pyqtSignal()
+
     def __init__(self, animation):
         super().__init__()
         loadUi("Vue/Ui/tp4.fenetre.ui", self)
         self.show()
-        # self.commencerPushButton.setDisabled(True)
-        # self.pausePushButton.setDisabled(True)
-        # self.deletePushButton.setDisabled(True)
+
+        self.pausePushButton.setDisabled(True)
+        self.deletePushButton.setDisabled(True)
         self.vitesseSpinBox.valueChanged.connect(self.mettre_a_jour_boutons)
         self.commencerPushButton.clicked.connect(self.commencer_animation)
 
@@ -42,15 +45,16 @@ class Vue(QMainWindow):
         self.pausePushButton.setDisabled(False)
         self.deletePushButton.setDisabled(False)
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Delete and self.deletePushButton.isEnabled():
+            self.delete.emit()
+            
     def mettre_a_jour_boutons(self):
-        # besoin d'un validator
-        # if self.vitesseLineEdit.text() == "":
-        #     self.commencerPushButton.setDisabled(True)
-        #else:
         self.commencerPushButton.setDisabled(False)
 
     def set_model_combo_box(self, model):
         self.corpsComboBox.setModel(model)
 
     def set_controller(self, controller):
+        #pourquoi est-ce qu'on connait le controlleur?? -iris
         self.__controller = controller
