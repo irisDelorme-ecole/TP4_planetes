@@ -100,19 +100,27 @@ class Model(QObject):
         QObject.__init__(self)
         self.distance = 0
         self.counter = 0
-        self.space = pk.Space()
+
         self.model_planetes = PlanetesListModel(self._list_planetes)
+
+        self.initiatlize_anim(asteroid, planete)
+
+
+
+
+    def initiatlize_anim(self, asteroid, planete):
+        self.space = pk.Space()
         self.__planete = planete
         self.__asteroid = asteroid
 
-        self.shape = pk.Circle(self.__asteroid, int(self.__asteroid.rayon))
+        self.shape = pk.Circle(asteroid, int(asteroid.rayon))
 
-
-        self.shape_planete = pk.Circle(self.__planete, int(self.__planete.rayon))
+        self.shape_planete = pk.Circle(planete, int(planete.rayon))
 
         self.__planete.position = (750 / self.SCALE, 500 / self.SCALE)
 
-        self.__asteroid.position = (self.__planete.position.x - 600 / self.SCALE, self.__planete.position.y - 150 / self.SCALE)
+        self.__asteroid.position = (planete.position.x - 600 / self.SCALE,
+                                    planete.position.y - 150 / self.SCALE)
 
         self.__asteroid.velocity = (10 / self.SCALE, 20 / self.SCALE)
 
@@ -177,6 +185,7 @@ class Model(QObject):
              range(2)]
 
         #print(f)
+        self.f_asteroid = f
         return f
 
     def gravity_on_planet(self):

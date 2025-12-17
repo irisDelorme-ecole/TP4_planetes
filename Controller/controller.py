@@ -26,15 +26,31 @@ class Controller:
         self.vue.pausePushButton.clicked.connect(self.gestion_pause)
         self.vue.commencerPushButton.clicked.connect(self.start)
         self.vue.corpsComboBox.currentIndexChanged.connect(self.change_asteroid)
+        self.vue.deletePushButton.clicked.connect(self.reset)
 
 
         self.model.signal_update.connect(self.update_views)
 
         # self.vue.deletePushButton.clicked.connect(self.reset)
 
+    def reset(self):
+        self.timer.stop()
+        self.model.initiatlize_anim(self.model.asteroid, self.model.planete)
+        self.model.counter = 0
+        self.reset_canvases()
+        self.animation.update_anim(self.model.asteroid, self.model.planete)
+        self.vue.commencerPushButton.setEnabled(True)
+
+    def reset_canvases(self):
+        self.canvas1.reset()
+        self.canvas2.reset()
+        self.canvas3.reset()
+
     def update_views(self):
         self.animation.update_anim(self.model.asteroid, self.model.planete)
         self.canvas2.update_distance(self.model.counter, self.model.distance)
+        self.canvas1.update_vitesse(self.model.asteroid.velocity)
+        self.canvas3.update_vitesse(self.model.counter,self.model.f_asteroid)
 
     def set_canvases(self, canvas1, canvas2, canvas3):
         self.canvas1 = canvas1
@@ -49,6 +65,7 @@ class Controller:
 
     def change_asteroid(self, index):
         self.model.asteroid = self.model.model_planetes.get_planetes(index)
+        self.reset()
 
     # def  reset(self):
     #     self.model =Model(self.vue.corpsComboBox.currentText())
