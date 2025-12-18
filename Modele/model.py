@@ -85,7 +85,7 @@ class Model(QObject):
     dist_updated = pyqtSignal(object, object)
     #rayons en km
     _list_planetes = [Planete(3.3e23, 2440, "Mercure", "darkGray", 0.4),
-                      Planete(4.8e24, 6052, "Venus", "darkYellow", 0.9),
+                      Planete(4.8e24, 6052, "Venus", "Yellow", 0.9),
                       Planete(6e24, 6371, "Terre", "blue", 1),
                       Planete(6.42e23, 3390, "Mars", "darkRed", 0.5),
                       Planete(1.9e27, 69911, "Jupiter", "white", 11),

@@ -4,7 +4,7 @@ classe qui gère le widget d'animation
 import sys
 
 from PyQt6.QtCore import Qt, QPoint, pyqtSignal
-from PyQt6.QtGui import QPainter
+from PyQt6.QtGui import QPainter, QColor
 from PyQt6.QtWidgets import QWidget, QApplication
 
 
@@ -19,7 +19,7 @@ class Animation(QWidget):
         super().__init__()
         #ne pas changer sauf si changé dans modèle
         self.setFixedSize(1000, 700)
-
+        self.autoriser_interaction = True
         self.asteroid = None
         self.planete = None
 
@@ -53,7 +53,9 @@ class Animation(QWidget):
                           int(self.planete.nb_terres * 4))
 
         if self.asteroid is not None:
-            p.setBrush(Qt.GlobalColor.blue)
+            print(self.asteroid.couleur)
+            p.setBrush(QColor(self.asteroid.couleur))
+            #p.setBrush(Qt.GlobalColor.blue)
             #print(self.asteroid.position)
             p.drawEllipse(self.scaled_point(self.asteroid.position), int(self.asteroid.nb_terres * 5),
                           int(self.asteroid.nb_terres * 5))
@@ -72,29 +74,32 @@ class Animation(QWidget):
         return  int(height-position)
 
     def mousePressEvent(self, event):
+     if self.autoriser_interaction:
         if event.button() != Qt.MouseButton.LeftButton:
             return
         pos = event.pos()
 
-        if self.planete and self._hit(self.planete, pos):
-            self.dragging = True
-            self.target = "planete"
-            self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
+        #if self.planete and self._hit(self.planete, pos):
+            #self.dragging = True
+            #self.target = "planete"
+            #self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
 
-        elif self.asteroid and self._hit(self.asteroid, pos):
+        if self.asteroid and self._hit(self.asteroid, pos):
             self.dragging = True
             self.target = "asteroid"
             self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
 
     def mouseMoveEvent(self, event):
-        if self.dragging:
+        if self.autoriser_interaction:
+         if self.dragging:
             pos = event.pos()
             self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
 
     def mouseReleaseEvent(self, event):
-        self.dragging = False
-        self.target = None
-        self.request_release.emit()
+        if self.autoriser_interaction:
+         self.dragging = False
+         self.target = None
+         self.request_release.emit()
 
     def _hit(self, body, mouse_pos):
         body_pos = self.scaled_point(body.position)
@@ -102,7 +107,8 @@ class Animation(QWidget):
         dy = mouse_pos.y() - body_pos.y()
         radius_px = int(body.nb_terres * 5)
         return dx*dx + dy*dy <= radius_px*radius_px
-
+    def changer_autoriser_interaction(self,valeur):
+        self.autoriser_interaction = valeur
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)

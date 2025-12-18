@@ -1,8 +1,7 @@
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, pyqtSignal
 
 
 class Controller:
-
 
 
     def __init__(self, model, vue, animation):
@@ -10,6 +9,7 @@ class Controller:
         self.vue = vue
         self.animation = animation
         self.vue.set_model_combo_box(self.model.model_planetes)
+
 
         #syncro anim - model
 
@@ -29,6 +29,7 @@ class Controller:
         self.vue.deletePushButton.clicked.connect(self.reset)
         self.vue.delete.connect(self.reset)
         self.vue.p.connect(self.gestion_pause)
+
 
 
         self.model.signal_update.connect(self.update_views)
@@ -74,8 +75,12 @@ class Controller:
     def gestion_pause(self):
         if self.timer.isActive():
             self.timer.stop()
+            self.animation.changer_autoriser_interaction(True)
+
         else:
+            self.animation.changer_autoriser_interaction(False)
             self.start()
+
 
     def change_asteroid(self, index):
         self.model.asteroid = self.model.model_planetes.get_planetes(index)
@@ -85,10 +90,13 @@ class Controller:
     #     self.model =Model(self.vue.corpsComboBox.currentText())
 
     def start(self):
+        self.animation.changer_autoriser_interaction(False)
         self.timer.start(16)
 
     def stop(self):
+        self.animation.changer_autoriser_interaction(True)
         self.timer.stop()
+
 
     def set_vitesse(self, value):
         self.model.set_vitesse(int(value))
