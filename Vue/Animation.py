@@ -3,12 +3,15 @@ classe qui gère le widget d'animation
 """
 import sys
 
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtCore import Qt, QPoint, pyqtSignal
 from PyQt6.QtGui import QPainter
 from PyQt6.QtWidgets import QWidget, QApplication
 
 
 class Animation(QWidget):
+
+    request_drag = pyqtSignal(str, float, float)
+    request_release = pyqtSignal()
 
     SCALE = 500/(0.5e8)
 
@@ -20,8 +23,13 @@ class Animation(QWidget):
         self.asteroid = None
         self.planete = None
 
+        self.dragging = False
+        self.target = None
 
         self.update()
+
+        self.drag_offset_x = 0
+        self.drag_offset_y = 100
 
 
     def update_anim(self, asteroid, planete):
@@ -62,6 +70,39 @@ class Animation(QWidget):
 
     def flip_pymunk_to_qt(self, height, position):
         return  int(height-position)
+
+    def mousePressEvent(self, event):
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
+        pos = event.pos()
+
+        if self.planete and self._hit(self.planete, pos):
+            self.dragging = True
+            self.target = "planete"
+            self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
+
+        elif self.asteroid and self._hit(self.asteroid, pos):
+            self.dragging = True
+            self.target = "asteroid"
+            self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
+
+    def mouseMoveEvent(self, event):
+        if self.dragging:
+            pos = event.pos()
+            self.request_drag.emit(self.target, pos.x() + self.drag_offset_x, pos.y() + self.drag_offset_y)
+
+    def mouseReleaseEvent(self, event):
+        self.dragging = False
+        self.target = None
+        self.request_release.emit()
+
+    def _hit(self, body, mouse_pos):
+        body_pos = self.scaled_point(body.position)
+        dx = mouse_pos.x() - body_pos.x()
+        dy = mouse_pos.y() - body_pos.y()
+        radius_px = int(body.nb_terres * 5)
+        return dx*dx + dy*dy <= radius_px*radius_px
+
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)

@@ -101,6 +101,8 @@ class Model(QObject):
         self.distance = 0
         self.counter = 0
 
+        self.f_asteroid = (0.0, 0.0)
+
         self.model_planetes = PlanetesListModel(self._list_planetes)
 
         self.initiatlize_anim(asteroid, planete)
@@ -230,5 +232,19 @@ class Model(QObject):
     @property
     def list_planetes(self):
         return self._list_planetes
+
+    def move_body(self, target, x_px, y_px):
+        x = x_px / self.SCALE
+        y = (self.H - y_px) / self.SCALE
+
+        if target == "planete":
+            body = self.__planete
+        else:
+            body = self.__asteroid
+
+        body.position = (x, y)
+
+        self.f_asteroid = self.gravity_on_asteroid()
+        self.signal_update.emit()
 
 

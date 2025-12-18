@@ -33,6 +33,18 @@ class Controller:
 
         self.model.signal_update.connect(self.update_views)
 
+        self.animation.request_drag.connect(self.on_drag)
+        self.animation.request_release.connect(self.on_release)
+
+    def on_drag(self, target, x, y):
+        if self.timer.isActive():
+            self.timer.stop()
+
+        self.model.move_body(target, x, y)
+
+    def on_release(self):
+        self.timer.start(16)
+
     def reset(self):
         self.timer.stop()
         self.model.initiatlize_anim(self.model.asteroid, self.model.planete)
